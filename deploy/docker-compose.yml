@@ -1,18 +1,15 @@
 services:
   backend:
-    build: ./backend
     image: ghcr.io/richardirons/ha-dashboard-backend:latest
     restart: unless-stopped
+    env_file: .env
     environment:
-      - HA_URL=${HA_URL}
-      - HA_TOKEN=${HA_TOKEN}
       - CONFIG_DIR=/config
       - PORT=5000
     volumes:
       - ./config:/config
 
   frontend:
-    build: ./frontend
     image: ghcr.io/richardirons/ha-dashboard-frontend:latest
     restart: unless-stopped
     ports:
