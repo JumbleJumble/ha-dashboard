@@ -1,0 +1,813 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0c0b0a;
+  --card: #19171a;
+  --card-border: rgba(255, 255, 255, 0.06);
+  --text: #f5f2ef;
+  --text-muted: #8a8580;
+  --text-dim: #55504b;
+  --red: #ef4444;
+
+  /* Fallback accent (overridden per-room via inline style or .accent-* class).
+     Reads as "warm-white bulb glow" rather than saturated yellow. */
+  --accent: #fff0c8;
+  --accent-bg: rgba(255, 240, 200, 0.14);
+  --accent-glow: rgba(255, 240, 200, 0.38);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  min-height: 100dvh;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    "Plus Jakarta Sans Variable", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* viewport-fit=cover lets the webview extend behind the iOS status bar and
+   home-indicator strips. We apply the safe-area insets once, on #root, so
+   every page gets correct padding for free — individual pages still add
+   whatever visual padding they want on top. The <html> background continues
+   to paint the canvas (including safe areas), so those strips stay on theme. */
+#root {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* ---------------- Room tiles (home page) ---------------- */
+.room-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  text-decoration: none;
+  color: inherit;
+  min-height: 82px;
+  overflow: hidden;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease;
+}
+.room-tile::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.room-tile:active {
+  transform: scale(0.99);
+  background: #211e21;
+}
+.room-tile-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: var(--accent-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+/* ---------------- Room header (room page) ---------------- */
+.room-title-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Interactive "all lights" toggle variant. */
+.room-title-toggle {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+}
+.room-title-toggle:active {
+  transform: scale(0.96);
+}
+.room-title-toggle.is-off {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.35);
+}
+.room-title-toggle.is-on {
+  background: var(--accent-bg);
+  color: var(--accent);
+  box-shadow:
+    0 0 0 1px var(--accent-bg) inset,
+    0 0 12px 0 var(--accent-glow),
+    0 0 28px 4px var(--accent-glow),
+    0 0 56px 10px var(--accent-glow);
+}
+.room-title-toggle.is-on svg {
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+/* ---------------- Entity cards (room page, full size) ---------------- */
+.entity {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  overflow: hidden;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.entity.state-on {
+  background: #1f1d18;
+  border-color: rgba(255, 240, 200, 0.24);
+  box-shadow:
+    0 0 0 1px rgba(255, 240, 200, 0.1) inset,
+    0 4px 24px -8px rgba(255, 240, 200, 0.28);
+}
+.entity.state-on::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 200, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.entity-icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+.entity.state-on .entity-icon {
+  background: rgba(255, 240, 200, 0.16);
+  color: #fff3d0;
+}
+
+.state-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+}
+.entity.state-on .state-pill {
+  background: rgba(255, 240, 200, 0.16);
+  color: #fff3d0;
+}
+.entity.state-off .state-pill {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+}
+
+/* ---------------- Unavailable collapsible group ---------------- */
+.unavailable-group {
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 18px;
+}
+.unavailable-group > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  user-select: none;
+}
+.unavailable-group > summary::-webkit-details-marker {
+  display: none;
+}
+.unavailable-group > summary:hover {
+  color: var(--text);
+}
+.unavailable-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+.unavailable-group[open] .unavailable-chevron {
+  transform: rotate(90deg);
+}
+.unavailable-count {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-left: auto;
+}
+
+.entity-small {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+}
+.entity-small:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+.entity-small-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+}
+
+/* ---------------- Sliders (brightness + colour temperature) ---------------- */
+/* Wrap a slider in .slider-zone to create a horizontal-gesture dead zone,
+ * so dragging on or near the slider never triggers the pager scroll-snap. */
+.slider-zone {
+  touch-action: pan-y;
+  padding: 10px 4px;
+  margin: -10px -4px;
+}
+
+.ha-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.ha-slider:focus {
+  outline: none;
+}
+
+.ha-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.ha-slider::-moz-range-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+}
+
+.ha-slider--fill::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--fill, 50%),
+    rgba(255, 255, 255, 0.06) var(--fill, 50%),
+    rgba(255, 255, 255, 0.06) 100%
+  );
+}
+.ha-slider--fill::-moz-range-progress {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.ha-slider--ct::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #ff9a3c 0%, #ffe4b3 45%, #dfe9ff 80%, #c4d7ff 100%);
+}
+.ha-slider--ct::-moz-range-track {
+  background: linear-gradient(to right, #ff9a3c 0%, #ffe4b3 45%, #dfe9ff 80%, #c4d7ff 100%);
+}
+
+/* Gradient slider: the track is a separate div behind the input because we
+ * need to set a computed linear-gradient(...) at runtime, which is painful
+ * to do through pseudo-element ::-webkit-slider-runnable-track. */
+.ha-gradient-wrap {
+  position: relative;
+  display: block;
+}
+.ha-gradient-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 12px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.ha-slider--gradient {
+  position: relative;
+  z-index: 1;
+}
+.ha-slider--gradient::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.ha-slider--gradient::-moz-range-track {
+  background: transparent;
+}
+
+.ha-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f5f2ef;
+  border: 3px solid var(--accent);
+  margin-top: -3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s ease;
+}
+.ha-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f5f2ef;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+.ha-slider:active::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+.ha-slider:active::-moz-range-thumb {
+  transform: scale(1.08);
+}
+
+/* ---------------- Dashboard carousel ---------------- */
+.room-pager {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.room-pager::-webkit-scrollbar {
+  display: none;
+}
+.room-pager > .room-page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.room-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 0 2px;
+}
+.room-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  transition:
+    background 0.2s ease,
+    width 0.2s ease;
+}
+.room-dot.is-active {
+  background: var(--accent);
+  width: 18px;
+}
+
+/* ---------------- Kitchen scene swatches ---------------- */
+.scene-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.scene-swatch {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.1s ease,
+    border-color 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.scene-swatch:active {
+  transform: scale(0.97);
+}
+.scene-swatch.is-selected {
+  border-color: rgba(255, 240, 200, 0.7);
+  box-shadow:
+    0 0 0 2px rgba(255, 240, 200, 0.45),
+    0 6px 22px -6px rgba(255, 240, 200, 0.5);
+}
+.scene-swatch-label {
+  position: relative;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: rgba(30, 25, 20, 0.82);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+/* ---------------- Per-room accents (used on HomePage tiles + on the
+   themed wrapper around the room page) ---------------- */
+.accent-lounge {
+  --accent: #fff0c8;
+  --accent-bg: rgba(255, 240, 200, 0.14);
+  --accent-glow: rgba(255, 240, 200, 0.38);
+}
+.accent-kitchen {
+  --accent: #fff2d0;
+  --accent-bg: rgba(255, 242, 208, 0.14);
+  --accent-glow: rgba(255, 242, 208, 0.38);
+}
+.accent-master_bedroom {
+  --accent: #a5b4fc;
+  --accent-bg: rgba(165, 180, 252, 0.12);
+  --accent-glow: rgba(129, 140, 248, 0.4);
+}
+.accent-kara {
+  --accent: #f9a8d4;
+  --accent-bg: rgba(249, 168, 212, 0.12);
+  --accent-glow: rgba(244, 114, 182, 0.4);
+}
+.accent-sonny {
+  --accent: #5eead4;
+  --accent-bg: rgba(94, 234, 212, 0.12);
+  --accent-glow: rgba(45, 212, 191, 0.4);
+}
+.accent-office {
+  --accent: #6ee7b7;
+  --accent-bg: rgba(110, 231, 183, 0.12);
+  --accent-glow: rgba(52, 211, 153, 0.4);
+}
+.accent-hall {
+  --accent: #7dd3fc;
+  --accent-bg: rgba(125, 211, 252, 0.12);
+  --accent-glow: rgba(56, 189, 248, 0.4);
+}
+
+/* =======================================================================
+   Kara's Room — bespoke deep-pink cottage theme
+   ======================================================================= */
+
+.kara-theme {
+  /* Base pink is chosen so that white body text clears WCAG AA (≈5.5:1). */
+  --kara-bg: #a8395f;
+  --kara-bg-top: #b8476e;
+  --kara-bg-bottom: #862c4a;
+  --kara-ink: #ffffff;
+  --kara-ink-muted: rgba(255, 255, 255, 0.78);
+  --kara-ink-dim: rgba(255, 255, 255, 0.52);
+  --kara-card: rgba(255, 255, 255, 0.09);
+  --kara-card-strong: rgba(255, 255, 255, 0.14);
+  --kara-border: rgba(255, 255, 255, 0.2);
+  --kara-border-strong: rgba(255, 255, 255, 0.32);
+  --kara-accent: #ffd7e3;
+  --kara-accent-glow: rgba(255, 220, 230, 0.35);
+}
+
+.kara-page {
+  min-height: 100dvh;
+  width: 100%;
+  background: transparent;
+  color: var(--kara-ink);
+  font-family: "Cormorant Garamond", Georgia, "Hoefler Text", "Palatino Linotype", Palatino, serif;
+  font-feature-settings: "lnum";
+}
+
+/* KaraRoomPage toggles this class on <html> and <body> while mounted.
+   iOS Safari is flaky with `background-attachment: fixed` on html/body and
+   doesn't reliably paint the canvas gradient through the safe areas. The
+   robust pattern is a fixed-position layer behind everything that's sized
+   to the visual viewport (covering status bar and home indicator), which
+   iOS *does* render correctly. */
+html.kara-body,
+body.kara-body {
+  background-color: #a8395f;
+}
+body.kara-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 180, 200, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(120, 40, 70, 0.45) 0%, transparent 55%),
+    linear-gradient(180deg, #b8476e 0%, #a8395f 45%, #862c4a 100%);
+}
+
+.kara-page-inner {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- header ---- */
+.kara-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+.kara-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: -8px;
+  border-radius: 999px;
+  color: var(--kara-ink-muted);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.kara-icon-btn:hover {
+  color: var(--kara-ink);
+  background: rgba(255, 255, 255, 0.08);
+}
+.kara-icon-btn--dim {
+  color: var(--kara-ink-dim);
+  margin-left: 0;
+  margin-right: -4px;
+}
+
+/* Kara reuses the kitchen's `RoomHeaderToggle` component for the in-header
+   all-lights toggle. The stock styles assume a dark background, so we
+   override the on/off visuals for Kara's deep-pink theme. Size (.room-title-icon)
+   is inherited from the base stylesheet. */
+.kara-theme .room-title-toggle.is-off {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.65);
+  box-shadow: none;
+}
+.kara-theme .room-title-toggle.is-on {
+  background: #ffffff;
+  color: #b4356c;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 14px 0 rgba(255, 220, 230, 0.55),
+    0 0 32px 4px rgba(255, 200, 220, 0.45),
+    0 0 60px 10px rgba(255, 180, 210, 0.3);
+}
+.kara-theme .room-title-toggle.is-on svg {
+  filter: drop-shadow(0 0 6px rgba(255, 200, 220, 0.8));
+}
+
+.kara-title {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  color: var(--kara-ink);
+  margin: 0;
+}
+.kara-subtitle {
+  font-family: inherit;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--kara-ink-muted);
+  margin-top: 2px;
+}
+
+/* ---- cards ---- */
+.kara-card {
+  background: var(--kara-card);
+  border: 1px solid var(--kara-border);
+  border-radius: 22px;
+  padding: 18px 18px 20px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 6px 24px -12px rgba(0, 0, 0, 0.25);
+}
+.kara-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  color: var(--kara-ink-muted);
+}
+.kara-card-flower {
+  color: var(--kara-ink-dim);
+}
+.kara-card-title {
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kara-ink-muted);
+  margin: 0;
+}
+.kara-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ---- swatch palette + shortcut row ---- */
+.kara-palette,
+.kara-shortcut-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.kara-swatch {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 2px 6px -2px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
+}
+.kara-swatch:active {
+  transform: scale(0.95);
+}
+.kara-swatch.is-selected {
+  box-shadow:
+    inset 0 0 0 2px #ffffff,
+    0 0 0 3px #ffffff,
+    0 8px 22px -6px rgba(255, 255, 255, 0.55);
+}
+
+/* Shortcut swatches carry a centred label. The swatch is still a <button>
+ *  with padding-bottom: 100% for aspect ratio, so the label is absolutely
+ *  positioned in the centre. */
+.kara-shortcut {
+  isolation: isolate;
+}
+.kara-shortcut-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  padding: 4px;
+  text-align: center;
+}
+/* Dark label for light swatches (Normal/Relax/Focus): a soft dusky pink
+ *  that reads against creams, peaches and pale blues. */
+.kara-shortcut-label.is-dark {
+  color: #a44669;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+/* Light label for dark swatches (Bedtime). */
+.kara-shortcut-label.is-light {
+  color: #ffffff;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Rainbow swatch is a <div> wrapper around a transparent native <input
+ *  type="color">, so tapping it pops the OS colour picker. */
+.kara-rainbow {
+  cursor: pointer;
+}
+.kara-color-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.kara-slider-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--kara-ink-muted);
+  font-style: italic;
+  padding: 4px 2px 0;
+}
+.kara-readout {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--kara-ink);
+}
+
+/* ---- sliders (deep-pink variant) ---- */
+/* Plain, uncoloured track — no accent fill. Used for the brightness slider;
+   colour is picked by the palette, so the slider track only needs to
+   communicate position. Gradient sliders (`.ha-slider--gradient`) keep their
+   transparent track so the backing <div> gradient shows through, which is
+   why we do NOT paint a track on the base `.kara-slider` class. */
+.kara-slider--plain::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.22);
+}
+.kara-slider--plain::-moz-range-track {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.kara-slider::-webkit-slider-thumb {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.25);
+}
+.kara-slider::-moz-range-thumb {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.25);
+}

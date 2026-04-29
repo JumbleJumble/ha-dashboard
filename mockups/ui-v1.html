@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UI mockup — v1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+      :root {
+        --bg: #0c0b0a;
+        --card: #19171a;
+        --card-border: rgba(255, 255, 255, 0.06);
+        --text: #f5f2ef;
+        --text-muted: #8a8580;
+        --text-dim: #55504b;
+        --red: #ef4444;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        font-feature-settings: "ss01", "cv11";
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        padding: 40px 20px 60px;
+        flex-wrap: wrap;
+      }
+
+      /* -------- phone frame -------- */
+      .phone {
+        width: 390px;
+        max-width: 100%;
+        background: var(--bg);
+        border-radius: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+      }
+      .phone-label {
+        display: block;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+      .screen {
+        padding: 28px 20px 40px;
+        min-height: 760px;
+      }
+
+      /* -------- typography -------- */
+      .page-title {
+        font-weight: 800;
+        font-size: 34px;
+        letter-spacing: -0.03em;
+        margin: 0 0 4px;
+      }
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+        padding: 0 4px 10px;
+        margin: 24px 0 0;
+      }
+
+      /* -------- home tiles -------- */
+      .rooms {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 20px;
+      }
+      .room-tile {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 20px;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 22px;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        transition:
+          transform 0.15s ease,
+          background 0.2s ease;
+        min-height: 82px;
+        overflow: hidden;
+      }
+      .room-tile::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        opacity: 0.55;
+        pointer-events: none;
+      }
+      .room-tile:active {
+        transform: scale(0.99);
+        background: #211e21;
+      }
+      .room-tile-icon {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: var(--accent-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+      }
+      .room-tile-icon svg {
+        width: 24px;
+        height: 24px;
+      }
+      .room-tile-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .room-tile-label {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .room-tile-sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        font-weight: 500;
+      }
+      .room-tile-arrow {
+        color: var(--text-dim);
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      /* per-room accents */
+      .accent-lounge {
+        --accent: #fbbf24;
+        --accent-bg: rgba(251, 191, 36, 0.12);
+        --accent-glow: rgba(251, 191, 36, 0.35);
+      }
+      .accent-kitchen {
+        --accent: #facc15;
+        --accent-bg: rgba(250, 204, 21, 0.12);
+        --accent-glow: rgba(250, 204, 21, 0.35);
+      }
+      .accent-master_bedroom {
+        --accent: #a5b4fc;
+        --accent-bg: rgba(165, 180, 252, 0.12);
+        --accent-glow: rgba(129, 140, 248, 0.4);
+      }
+      .accent-kara {
+        --accent: #f9a8d4;
+        --accent-bg: rgba(249, 168, 212, 0.12);
+        --accent-glow: rgba(244, 114, 182, 0.4);
+      }
+      .accent-sonny {
+        --accent: #5eead4;
+        --accent-bg: rgba(94, 234, 212, 0.12);
+        --accent-glow: rgba(45, 212, 191, 0.4);
+      }
+      .accent-office {
+        --accent: #6ee7b7;
+        --accent-bg: rgba(110, 231, 183, 0.12);
+        --accent-glow: rgba(52, 211, 153, 0.4);
+      }
+      .accent-hall {
+        --accent: #7dd3fc;
+        --accent-bg: rgba(125, 211, 252, 0.12);
+        --accent-glow: rgba(56, 189, 248, 0.4);
+      }
+
+      /* -------- room page -------- */
+      .room-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 4px 0 20px;
+      }
+      .back-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        background: transparent;
+        border: none;
+        margin-left: -8px;
+        cursor: pointer;
+      }
+      .back-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+      .room-title-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+      }
+      .room-title-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        background: var(--accent-bg);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .room-title-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+      .room-title {
+        font-weight: 800;
+        font-size: 26px;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin: 0;
+      }
+      .room-subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        font-weight: 500;
+      }
+
+      /* -------- entity cards -------- */
+      .entities {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .entity {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 18px;
+        transition:
+          background 0.3s ease,
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+        overflow: hidden;
+      }
+
+      .entity.state-on {
+        background: #1f1a15;
+        border-color: rgba(251, 191, 36, 0.22);
+        box-shadow:
+          0 0 0 1px rgba(251, 191, 36, 0.08) inset,
+          0 4px 24px -8px rgba(251, 191, 36, 0.25);
+      }
+      .entity.state-on::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(251, 191, 36, 0.18) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .entity.state-unavailable {
+        background: #1a1515;
+        border-color: rgba(239, 68, 68, 0.15);
+      }
+      .entity.state-unavailable .entity-icon {
+        color: var(--red);
+        opacity: 0.6;
+      }
+      .entity.state-unavailable .entity-label {
+        color: var(--text-muted);
+      }
+
+      /* -------- unavailable section (collapsed, quiet) -------- */
+      .unavailable-group {
+        margin-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        padding-top: 18px;
+      }
+      .unavailable-group summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 4px;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        user-select: none;
+      }
+      .unavailable-group summary::-webkit-details-marker {
+        display: none;
+      }
+      .unavailable-group summary:hover {
+        color: var(--text);
+      }
+      .unavailable-chevron {
+        width: 14px;
+        height: 14px;
+        transition: transform 0.2s ease;
+      }
+      .unavailable-group[open] .unavailable-chevron {
+        transform: rotate(90deg);
+      }
+      .unavailable-count {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(239, 68, 68, 0.1);
+        color: #fca5a5;
+        letter-spacing: 0;
+        text-transform: none;
+        margin-left: auto;
+      }
+      .unavailable-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding-top: 10px;
+      }
+      .entity-small {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--text-muted);
+      }
+      .entity-small:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .entity-small-icon {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-dim);
+      }
+      .entity-small-icon svg {
+        width: 14px;
+        height: 14px;
+      }
+      .entity-small-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        min-width: 0;
+      }
+      .entity-small-meta {
+        font-size: 11px;
+        color: var(--text-dim);
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        flex-shrink: 0;
+      }
+
+      .entity-icon {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+      .entity.state-on .entity-icon {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fcd34d;
+      }
+      .entity-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .entity-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .entity-label {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .entity-sub {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        font-weight: 500;
+      }
+
+      .state-pill {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        letter-spacing: 0.01em;
+      }
+      .entity.state-on .state-pill {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fcd34d;
+      }
+      .entity.state-off .state-pill {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-muted);
+      }
+      .entity.state-unavailable .state-pill {
+        background: rgba(239, 68, 68, 0.12);
+        color: #fca5a5;
+      }
+
+      /* -------- explainer footer -------- */
+      .legend {
+        max-width: 900px;
+        width: 100%;
+        margin: 20px auto 0;
+        padding: 18px 20px;
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.6;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .legend strong {
+        color: var(--text);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- =================== HOME =================== -->
+    <div>
+      <span class="phone-label">Home screen</span>
+      <div class="phone">
+        <div class="screen">
+          <h1 class="page-title">Home</h1>
+
+          <div class="section-label">Rooms</div>
+          <div class="rooms">
+            <a class="room-tile accent-lounge" href="#">
+              <div class="room-tile-icon">
+                <!-- Sofa -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Lounge</div>
+                <div class="room-tile-sub">8 lights</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-kitchen" href="#">
+              <div class="room-tile-icon">
+                <!-- ChefHat -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Kitchen</div>
+                <div class="room-tile-sub">13 lights</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-master_bedroom" href="#">
+              <div class="room-tile-icon">
+                <!-- Bed -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Master Bedroom</div>
+                <div class="room-tile-sub">7 lights</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-kara" href="#">
+              <div class="room-tile-icon">
+                <!-- Baby -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Kara's Room</div>
+                <div class="room-tile-sub">1 light</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-sonny" href="#">
+              <div class="room-tile-icon">
+                <!-- Baby -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Sonny's Room</div>
+                <div class="room-tile-sub">1 light</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-office" href="#">
+              <div class="room-tile-icon">
+                <!-- Monitor -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Office</div>
+                <div class="room-tile-sub">1 light</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+
+            <a class="room-tile accent-hall" href="#">
+              <div class="room-tile-icon">
+                <!-- DoorOpen -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg>
+              </div>
+              <div class="room-tile-body">
+                <div class="room-tile-label">Hall</div>
+                <div class="room-tile-sub">2 lights</div>
+              </div>
+              <div class="room-tile-arrow">›</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== ROOM PAGE =================== -->
+    <div class="accent-lounge">
+      <span class="phone-label">Room page — Lounge</span>
+      <div class="phone">
+        <div class="screen">
+          <div class="room-header">
+            <button class="back-btn" aria-label="Back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            </button>
+            <div class="room-title-group">
+              <div class="room-title-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/></svg>
+              </div>
+              <div>
+                <h1 class="room-title">Lounge</h1>
+                <div class="room-subtitle">3 of 8 on</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="entities">
+            <div class="entity state-on">
+              <div class="entity-icon">
+                <!-- Lightbulb -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+              </div>
+              <div class="entity-body">
+                <div class="entity-label">Living Room Lights</div>
+                <div class="entity-sub">group · 4 on</div>
+              </div>
+              <div class="state-pill">On</div>
+            </div>
+
+            <div class="entity state-on">
+              <div class="entity-icon">
+                <!-- LampDesk -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5-3 3 2 7 8-8-7-2Z"/><path d="m14 5-3 3-3-3 3-3 3 3Z"/><path d="M9.5 6.5 4 12l3 6"/><path d="M3 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2H3Z"/></svg>
+              </div>
+              <div class="entity-body">
+                <div class="entity-label">Lounge armchair</div>
+                <div class="entity-sub">updated just now</div>
+              </div>
+              <div class="state-pill">On</div>
+            </div>
+
+            <div class="entity state-on">
+              <div class="entity-icon">
+                <!-- LampCeiling -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+              </div>
+              <div class="entity-body">
+                <div class="entity-label">Lounge ceiling X</div>
+                <div class="entity-sub">updated 3 min ago</div>
+              </div>
+              <div class="state-pill">On</div>
+            </div>
+
+            <div class="entity state-off">
+              <div class="entity-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+              </div>
+              <div class="entity-body">
+                <div class="entity-label">Lounge ceiling Y</div>
+                <div class="entity-sub">off since 11:20</div>
+              </div>
+              <div class="state-pill">Off</div>
+            </div>
+
+            <div class="entity state-off">
+              <div class="entity-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+              </div>
+              <div class="entity-body">
+                <div class="entity-label">Lounge ceiling P</div>
+                <div class="entity-sub">off since 11:20</div>
+              </div>
+              <div class="state-pill">Off</div>
+            </div>
+          </div>
+
+          <details class="unavailable-group">
+            <summary>
+              <svg class="unavailable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              Unavailable
+              <span class="unavailable-count">3</span>
+            </summary>
+            <div class="unavailable-list">
+              <div class="entity-small">
+                <div class="entity-small-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+                </div>
+                <div class="entity-small-label">Lounge ceiling B</div>
+                <div class="entity-small-meta">14 min ago</div>
+              </div>
+              <div class="entity-small">
+                <div class="entity-small-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+                </div>
+                <div class="entity-small-label">Lounge ceiling C</div>
+                <div class="entity-small-meta">2 h ago</div>
+              </div>
+              <div class="entity-small">
+                <div class="entity-small-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5"/><path d="M6 7h12l-3 7H9l-3-7Z"/><path d="M12 14v8"/><path d="M10 22h4"/></svg>
+                </div>
+                <div class="entity-small-label">Lounge ceiling Z</div>
+                <div class="entity-small-meta">4 h ago</div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <strong>Design notes.</strong> Per-room accent colours are used sparingly — as a small icon tint and a faint halo behind the tile icon, not as a full background wash. Active lights get a soft amber glow plus a warmer card background so they feel lit. Unavailable devices are never hidden; they get a quiet red tint. The "last seen" subtitle is a placeholder that in the real UI will be derived from <code>last_updated</code>. Room tile counts ("8 lights") are similarly derived and could be dropped if you want the home screen sparser.
+    </div>
+  </body>
+</html>

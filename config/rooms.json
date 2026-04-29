@@ -1,0 +1,93 @@
+{
+  "rooms": [
+    {
+      "id": "lounge",
+      "label": "Lounge",
+      "entities": [
+        "light.living_room_lights",
+        "light.lounge_armchair",
+        "light.lounge_ceiling_b",
+        "light.lounge_ceiling_c",
+        "light.lounge_ceiling_p",
+        "light.lounge_ceiling_x",
+        "light.lounge_ceiling_y",
+        "light.lounge_ceiling_z"
+      ],
+      "dashboard": {
+        "group": "light.home_assistant_connect_zbt_2_zig_group_lounge_lights",
+        "pages": [
+          {
+            "widgets": [
+              { "type": "gradient", "label": "Brightness", "gradient": "tungsten" },
+              { "type": "climate", "entityId": "climate.lounge" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "entities": [
+        "light.bar_a",
+        "light.bar_b",
+        "light.gap_a",
+        "light.gap_b",
+        "light.hall_door",
+        "light.hob_a",
+        "light.hob_b",
+        "light.sink_a",
+        "light.sink_b",
+        "light.table_a",
+        "light.table_b",
+        "light.table_c",
+        "light.table_d",
+        "light.utility_door"
+      ],
+      "dashboard": {
+        "group": "light.home_assistant_connect_zbt_2_zig_group_kitchen_lights",
+        "pages": [
+          {
+            "widgets": [
+              { "type": "gradient", "label": "Brightness", "gradient": "tungsten" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "master_bedroom",
+      "label": "Master Bedroom",
+      "entities": [
+        "light.bedroom_fern_light",
+        "light.wardrobe_door",
+        "light.wardrobe_window",
+        "light.front_wardrobe",
+        "light.front_bathroom",
+        "light.front_olive",
+        "light.front_richard"
+      ]
+    },
+    {
+      "id": "kara",
+      "label": "Kara's Room",
+      "entities": [
+        "light.karas_light"
+      ]
+    },
+    {
+      "id": "sonny",
+      "label": "Sonny's Room",
+      "entities": [
+        "light.sonnys_light"
+      ]
+    },
+    {
+      "id": "office",
+      "label": "Office",
+      "entities": [
+        "light.office_ceiling"
+      ]
+    }
+  ]
+}

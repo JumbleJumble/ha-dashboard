@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gradient slider mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+      :root {
+        --bg: #0c0b0a;
+        --card: #19171a;
+        --card-border: rgba(255, 255, 255, 0.06);
+        --text: #f5f2ef;
+        --text-muted: #8a8580;
+        --text-dim: #55504b;
+        --accent: #ffb84d;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        padding: 40px 20px 80px;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .hint {
+        color: var(--text-muted);
+        font-size: 13px;
+        margin: -20px 0 0;
+      }
+
+      .card {
+        width: 520px;
+        max-width: 100%;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 18px;
+        padding: 20px 20px 24px;
+      }
+
+      .header {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .header .label {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .header .readout {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .header .readout strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      /* -------- slider -------- */
+      .slider-wrap {
+        position: relative;
+        padding: 14px 4px;
+      }
+      .track {
+        position: relative;
+        height: 14px;
+        border-radius: 999px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .track-fill {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+      }
+
+      /* keyframe markers */
+      .marks {
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        top: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+      .mark {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        transform: translateX(-1px);
+      }
+      .mark .dot {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
+      }
+      .mark.kelvin .dot {
+        background: #fcd34d;
+      }
+      .mark.brightness .dot {
+        background: #8ae1ff;
+      }
+      .mark .caption {
+        position: absolute;
+        bottom: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: var(--text-dim);
+        white-space: nowrap;
+      }
+
+      .slider {
+        position: relative;
+        z-index: 2;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 32px;
+        background: transparent;
+        margin: -9px 0;
+        cursor: pointer;
+        touch-action: pan-y;
+      }
+      .slider:focus {
+        outline: none;
+      }
+      .slider::-webkit-slider-runnable-track {
+        height: 14px;
+        background: transparent;
+      }
+      .slider::-moz-range-track {
+        height: 14px;
+        background: transparent;
+      }
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f5f2ef;
+        border: 3px solid var(--accent);
+        margin-top: -7px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+      .slider::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f5f2ef;
+        border: 3px solid var(--accent);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* -------- plots -------- */
+      .plots {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-top: 30px;
+      }
+      .plot {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .plot .title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .plot svg {
+        width: 100%;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+      }
+      .plot .axis {
+        stroke: rgba(255, 255, 255, 0.06);
+        stroke-width: 1;
+      }
+      .plot .curve {
+        fill: none;
+        stroke-width: 2;
+      }
+      .plot .curve.kelvin {
+        stroke: #fcd34d;
+      }
+      .plot .curve.brightness {
+        stroke: #8ae1ff;
+      }
+      .plot .stopdot {
+        r: 3.5;
+      }
+      .plot .stopdot.kelvin {
+        fill: #fcd34d;
+      }
+      .plot .stopdot.brightness {
+        fill: #8ae1ff;
+      }
+      .plot .cursor {
+        stroke: rgba(255, 255, 255, 0.25);
+        stroke-width: 1;
+        stroke-dasharray: 2 3;
+      }
+      .plot .yaxis-label {
+        fill: var(--text-dim);
+        font-size: 10px;
+      }
+
+      /* -------- keyframe legend -------- */
+      .legend {
+        display: flex;
+        gap: 18px;
+        justify-content: center;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+      .legend .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .legend .chip .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .legend .chip.brightness .dot {
+        background: #8ae1ff;
+      }
+      .legend .chip.kelvin .dot {
+        background: #fcd34d;
+      }
+
+      .rawcfg {
+        width: 520px;
+        max-width: 100%;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        white-space: pre;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gradient mockup: "Wake"</h1>
+    <p class="hint">Drag the slider. The thumb's accent, the track fill, and the readouts are all computed from the gradient at the current position.</p>
+
+    <section class="card" aria-label="Gradient slider">
+      <div class="header">
+        <div class="label">Wake</div>
+        <div class="readout">
+          <strong id="pos">0.00</strong>
+          &nbsp;&middot;&nbsp;
+          <strong id="b">0%</strong> brightness
+          &nbsp;&middot;&nbsp;
+          <strong id="k">2000K</strong>
+        </div>
+      </div>
+
+      <div class="slider-wrap">
+        <div class="track">
+          <div class="track-fill" id="trackFill"></div>
+        </div>
+        <div class="marks" id="marks"></div>
+        <input
+          class="slider"
+          id="slider"
+          type="range"
+          min="0"
+          max="1000"
+          step="1"
+          value="0"
+          aria-label="Gradient position"
+        />
+      </div>
+
+      <div class="legend">
+        <span class="chip brightness"><span class="dot"></span>brightness stops</span>
+        <span class="chip kelvin"><span class="dot"></span>kelvin stops</span>
+      </div>
+
+      <div class="plots">
+        <div class="plot">
+          <div class="title">Brightness (0 → 100%)</div>
+          <svg viewBox="0 0 500 80" preserveAspectRatio="none" id="plotBrightness"></svg>
+        </div>
+        <div class="plot">
+          <div class="title">Kelvin (2000K → 5000K)</div>
+          <svg viewBox="0 0 500 80" preserveAspectRatio="none" id="plotKelvin"></svg>
+        </div>
+      </div>
+    </section>
+
+    <pre class="rawcfg" id="rawcfg"></pre>
+
+    <script>
+      // --------- the gradient under test ---------
+      const gradient = {
+        type: "gradient",
+        label: "Wake",
+        channels: {
+          brightness: [
+            { at: 0.0, value: 0 },
+            { at: 0.6, value: 100 },
+          ],
+          kelvin: [
+            { at: 0.0, value: 2000 },
+            { at: 1.0, value: 5000 },
+          ],
+        },
+      };
+
+      document.getElementById("rawcfg").textContent = JSON.stringify(gradient, null, 2);
+
+      // --------- channel lerp with edge-clamp ---------
+      function sampleChannel(stops, at) {
+        if (stops.length === 0) return null;
+        if (at <= stops[0].at) return stops[0].value;
+        if (at >= stops[stops.length - 1].at) return stops[stops.length - 1].value;
+        for (let i = 0; i < stops.length - 1; i++) {
+          const a = stops[i];
+          const b = stops[i + 1];
+          if (at >= a.at && at <= b.at) {
+            const t = (at - a.at) / (b.at - a.at);
+            return a.value + (b.value - a.value) * t;
+          }
+        }
+        return stops[stops.length - 1].value;
+      }
+
+      // --------- Tanner Helland kelvin -> RGB approximation ---------
+      function kelvinToRgb(k) {
+        const T = k / 100;
+        let r, g, b;
+        if (T <= 66) {
+          r = 255;
+          g = 99.4708025861 * Math.log(T) - 161.1195681661;
+        } else {
+          r = 329.698727446 * Math.pow(T - 60, -0.1332047592);
+          g = 288.1221695283 * Math.pow(T - 60, -0.0755148492);
+        }
+        if (T >= 66) {
+          b = 255;
+        } else if (T <= 19) {
+          b = 0;
+        } else {
+          b = 138.5177312231 * Math.log(T - 10) - 305.0447927307;
+        }
+        return [clamp8(r), clamp8(g), clamp8(b)];
+      }
+      function clamp8(n) {
+        return Math.max(0, Math.min(255, Math.round(n)));
+      }
+
+      // --------- preview colour at position ---------
+      function previewRgbAt(at) {
+        const k = sampleChannel(gradient.channels.kelvin, at);
+        const bPct = sampleChannel(gradient.channels.brightness, at);
+        const [r, g, b] = kelvinToRgb(k);
+        const scale = bPct / 100; // preview only — doesn't reflect perceptual curve
+        return [Math.round(r * scale), Math.round(g * scale), Math.round(b * scale)];
+      }
+
+      // --------- build CSS linear-gradient, sampled densely for smoothness ---------
+      function gradientCss() {
+        const samples = 40;
+        const stops = [];
+        for (let i = 0; i <= samples; i++) {
+          const at = i / samples;
+          const [r, g, b] = previewRgbAt(at);
+          stops.push(`rgb(${r}, ${g}, ${b}) ${(at * 100).toFixed(2)}%`);
+        }
+        return `linear-gradient(to right, ${stops.join(", ")})`;
+      }
+
+      // --------- keyframe markers ---------
+      function renderMarks() {
+        const marks = document.getElementById("marks");
+        marks.innerHTML = "";
+        for (const s of gradient.channels.brightness) {
+          addMark(s.at, "brightness", `${s.value}%`);
+        }
+        for (const s of gradient.channels.kelvin) {
+          addMark(s.at, "kelvin", `${s.value}K`);
+        }
+        function addMark(at, kind, caption) {
+          const el = document.createElement("div");
+          el.className = `mark ${kind}`;
+          el.style.left = `${(at * 100).toFixed(3)}%`;
+          el.innerHTML = `<span class="dot"></span><span class="caption">${caption}</span>`;
+          marks.appendChild(el);
+        }
+      }
+
+      // --------- channel plots ---------
+      function renderPlot(svgId, stops, kind, yMin, yMax) {
+        const svg = document.getElementById(svgId);
+        svg.innerHTML = "";
+        const W = 500;
+        const H = 80;
+        const PAD = 6;
+        const x = (at) => PAD + at * (W - 2 * PAD);
+        const y = (v) => H - PAD - ((v - yMin) / (yMax - yMin)) * (H - 2 * PAD);
+
+        // baseline
+        const axis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        axis.setAttribute("x1", PAD);
+        axis.setAttribute("x2", W - PAD);
+        axis.setAttribute("y1", H - PAD);
+        axis.setAttribute("y2", H - PAD);
+        axis.setAttribute("class", "axis");
+        svg.appendChild(axis);
+
+        // piecewise-linear curve with edge-clamp
+        const pts = [];
+        pts.push([0, stops[0].value]);
+        for (const s of stops) pts.push([s.at, s.value]);
+        pts.push([1, stops[stops.length - 1].value]);
+        const d = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${x(p[0])} ${y(p[1])}`).join(" ");
+        const curve = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        curve.setAttribute("d", d);
+        curve.setAttribute("class", `curve ${kind}`);
+        svg.appendChild(curve);
+
+        // stop dots
+        for (const s of stops) {
+          const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          c.setAttribute("cx", x(s.at));
+          c.setAttribute("cy", y(s.value));
+          c.setAttribute("class", `stopdot ${kind}`);
+          svg.appendChild(c);
+        }
+
+        // axis labels
+        const labelMin = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelMin.setAttribute("x", PAD + 2);
+        labelMin.setAttribute("y", H - 2);
+        labelMin.setAttribute("class", "yaxis-label");
+        labelMin.textContent = yMin.toString();
+        svg.appendChild(labelMin);
+
+        const labelMax = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        labelMax.setAttribute("x", PAD + 2);
+        labelMax.setAttribute("y", PAD + 10);
+        labelMax.setAttribute("class", "yaxis-label");
+        labelMax.textContent = yMax.toString();
+        svg.appendChild(labelMax);
+
+        // cursor line (updated live)
+        const cursor = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        cursor.setAttribute("x1", PAD);
+        cursor.setAttribute("x2", PAD);
+        cursor.setAttribute("y1", PAD);
+        cursor.setAttribute("y2", H - PAD);
+        cursor.setAttribute("class", "cursor");
+        cursor.id = svgId + "-cursor";
+        svg.appendChild(cursor);
+      }
+
+      function updateCursor(svgId, at) {
+        const cursor = document.getElementById(svgId + "-cursor");
+        if (!cursor) return;
+        const W = 500;
+        const PAD = 6;
+        const x = PAD + at * (W - 2 * PAD);
+        cursor.setAttribute("x1", x);
+        cursor.setAttribute("x2", x);
+      }
+
+      // --------- wire up ---------
+      document.getElementById("trackFill").style.background = gradientCss();
+      renderMarks();
+      renderPlot("plotBrightness", gradient.channels.brightness, "brightness", 0, 100);
+      renderPlot("plotKelvin", gradient.channels.kelvin, "kelvin", 2000, 5000);
+
+      const slider = document.getElementById("slider");
+      const posEl = document.getElementById("pos");
+      const bEl = document.getElementById("b");
+      const kEl = document.getElementById("k");
+
+      function update() {
+        const at = Number(slider.value) / 1000;
+        posEl.textContent = at.toFixed(2);
+        const b = sampleChannel(gradient.channels.brightness, at);
+        const k = sampleChannel(gradient.channels.kelvin, at);
+        bEl.textContent = `${Math.round(b)}%`;
+        kEl.textContent = `${Math.round(k)}K`;
+
+        const [r, g, bb] = previewRgbAt(at);
+        document.documentElement.style.setProperty("--accent", `rgb(${r}, ${g}, ${bb})`);
+
+        updateCursor("plotBrightness", at);
+        updateCursor("plotKelvin", at);
+      }
+      slider.addEventListener("input", update);
+      update();
+    </script>
+  </body>
+</html>

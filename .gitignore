@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+.vite/
+
+# Scene data can contain personal state — opt-in to committing it
+config/scenes.json

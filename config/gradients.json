@@ -1,0 +1,26 @@
+{
+  "gradients": {
+    "tungsten": {
+      "channels": {
+        "brightness": [
+          { "at": 0.0, "value": 0 },
+          { "at": 0.6, "value": 100 }
+        ],
+        "kelvin": [
+          { "at": 0.0, "value": 2000 },
+          { "at": 1.0, "value": 5000 }
+        ]
+      },
+      "displayChannels": {
+        "brightness": [
+          { "at": 0.0, "value": 0 },
+          { "at": 0.6, "value": 100 }
+        ],
+        "kelvin": [
+          { "at": 0.0, "value": 1900 },
+          { "at": 1.0, "value": 8500 }
+        ]
+      }
+    }
+  }
+}
