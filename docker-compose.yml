@@ -1,7 +1,7 @@
 services:
   backend:
     build: ./backend
-    image: ghcr.io/JumbleJumble/ha-dashboard-backend:latest
+    image: ghcr.io/jumblejumble/ha-dashboard-backend:latest
     restart: unless-stopped
     environment:
       - HA_URL=${HA_URL}
@@ -13,7 +13,7 @@ services:
 
   frontend:
     build: ./frontend
-    image: ghcr.io/JumbleJumble/ha-dashboard-frontend:latest
+    image: ghcr.io/jumblejumble/ha-dashboard-frontend:latest
     restart: unless-stopped
     ports:
       - "3000:80"
