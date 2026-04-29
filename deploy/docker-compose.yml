@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/richardirons/ha-dashboard-backend:latest
+    image: ghcr.io/JumbleJumble/ha-dashboard-backend:latest
     restart: unless-stopped
     env_file: .env
     environment:
@@ -10,7 +10,7 @@ services:
       - ./config:/config
 
   frontend:
-    image: ghcr.io/richardirons/ha-dashboard-frontend:latest
+    image: ghcr.io/JumbleJumble/ha-dashboard-frontend:latest
     restart: unless-stopped
     ports:
       - "3000:80"

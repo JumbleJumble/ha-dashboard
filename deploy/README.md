@@ -16,7 +16,7 @@ mkdir -p config
 # Copy your config files here, or mount a volume pointing at them.
 
 # 4. Log in to GHCR so Docker can pull the private images
-echo <your-github-pat> | docker login ghcr.io -u richardirons --password-stdin
+echo <your-github-pat> | docker login ghcr.io -u JumbleJumble --password-stdin
 # A PAT with `read:packages` scope is enough. Create one at:
 # https://github.com/settings/tokens
 

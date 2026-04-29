@@ -6,8 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE: ghcr.io/richardirons/ha-dashboard-backend
-  FRONTEND_IMAGE: ghcr.io/richardirons/ha-dashboard-frontend
+  BACKEND_IMAGE: ghcr.io/JumbleJumble/ha-dashboard-backend
+  FRONTEND_IMAGE: ghcr.io/JumbleJumble/ha-dashboard-frontend
 
 jobs:
   build:
