@@ -220,6 +220,45 @@ body {
   color: var(--text-muted);
 }
 
+/* Per-entity action button (right side of the entity card). Toggles power
+ * on on/off-only items, opens the controls modal on dimmable lights. */
+.entity-action-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.12s ease;
+}
+.entity-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+.entity-action-btn:active {
+  transform: scale(0.94);
+}
+.entity.state-on .entity-action-btn {
+  background: rgba(255, 240, 200, 0.18);
+  color: #fff3d0;
+}
+.entity.state-on .entity-action-btn:hover {
+  background: rgba(255, 240, 200, 0.28);
+}
+.entity.state-unavailable .entity-action-btn,
+.entity.state-unavailable .entity-action-btn:hover {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* ---------------- Unavailable collapsible group ---------------- */
 .unavailable-group {
   margin-top: 24px;
